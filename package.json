@@ -7,7 +7,6 @@
     "id": "cordova-plugin-splashscreen",
     "platforms": [
       "android",
-      "ubuntu",
       "ios",
       "windows",
       "browser"
@@ -21,7 +20,8 @@
     "ecosystem:cordova",
     "cordova-android",
     "cordova-ios",
-    "cordova-windows"
+    "cordova-windows",
+    "cordova-browser"
   ],
   "scripts": {
     "test": "npm run jshint",
