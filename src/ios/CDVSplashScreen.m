@@ -126,7 +126,9 @@
 
 - (void)hideViews
 {
-    [_imageView setAlpha:0];
+//    [_imageView setAlpha:0];
+    _imageView.frame = CGRectMake(-self.webView.frame.size.width, 0, self.webView.frame.size.width, self.webView.frame.size.height);
+    self.webView.frame = CGRectMake(0, 0, self.webView.frame.size.width, self.webView.frame.size.height);
     [_activityView setAlpha:0];
 }
 
@@ -431,7 +433,6 @@
         id fadeSplashScreenDuration = [self.commandDelegate.settings objectForKey:[@"FadeSplashScreenDuration" lowercaseString]];
 
         float fadeDuration = fadeSplashScreenDuration == nil ? kFadeDurationDefault : [fadeSplashScreenDuration floatValue];
-
         id splashDurationString = [self.commandDelegate.settings objectForKey: [@"SplashScreenDelay" lowercaseString]];
         float splashDuration = splashDurationString == nil ? kSplashScreenDurationDefault : [splashDurationString floatValue];
 
@@ -489,6 +490,7 @@
 
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (uint64_t) effectiveSplashDuration * NSEC_PER_SEC), dispatch_get_main_queue(), CFBridgingRelease(CFBridgingRetain(^(void) {
                 if (!_destroyed) {
+                    self.webView.frame = CGRectMake(self.webView.frame.size.width, 0, self.webView.frame.size.width, self.webView.frame.size.height);
                     [UIView transitionWithView:self.viewController.view
                                     duration:(fadeDuration / 1000)
                                     options:UIViewAnimationOptionTransitionNone
