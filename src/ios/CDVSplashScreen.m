@@ -491,26 +491,29 @@
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (uint64_t) effectiveSplashDuration * NSEC_PER_SEC), dispatch_get_main_queue(), CFBridgingRelease(CFBridgingRetain(^(void) {
                 if (!_destroyed) {
                     self.webView.frame = CGRectMake(self.webView.frame.size.width, 0, self.webView.frame.size.width, self.webView.frame.size.height);
-                    [UIView transitionWithView:self.viewController.view
-                                    duration:(fadeDuration / 1000)
-                                    options:UIViewAnimationOptionTransitionNone
-                                    animations:^(void) {
-                                        [weakSelf hideViews];
-                                    }
-                                    completion:^(BOOL finished) {
-                                        // Always destroy views, otherwise you could have an
-                                        // invisible splashscreen that is overlayed over your active views
-                                        // which causes that no touch events are passed
-                                        if (!_destroyed) {
-                                            [weakSelf destroyViews];
-                                            // TODO: It might also be nice to have a js event happen here -jm
-                                        }
-                                    }
-                    ];
+                    [self performSelector:@selector(hideImageView) withObject:self afterDelay:1];
+
                 }
             })));
         }
     }
 }
-
+- (void)hideImageView{
+    [UIView transitionWithView:self.viewController.view
+                    duration:(200 / 1000)
+                    options:UIViewAnimationOptionTransitionNone
+                    animations:^(void) {
+                        [self hideViews];
+                    }
+                    completion:^(BOOL finished) {
+                        // Always destroy views, otherwise you could have an
+                        // invisible splashscreen that is overlayed over your active views
+                        // which causes that no touch events are passed
+        if (!self->_destroyed) {
+                            [self destroyViews];
+                            // TODO: It might also be nice to have a js event happen here -jm
+                        }
+                    }
+    ];
+}
 @end
